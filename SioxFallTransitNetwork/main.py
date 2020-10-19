@@ -187,14 +187,14 @@ if __name__ == "__main__":
     (nodes, x, y) = read_standard_node()
     # G = nx.DiGraph()
     G = nx.MultiGraph()
-    plt.figure(figsize=(8, 12))
+    plt.figure(figsize=(6, 8))
     for i in range(0, len(nodes)):
         G.add_node(nodes[i], pos=(x[i], y[i]))
     node_pos = nx.get_node_attributes(G, 'pos')
     # nx.draw_networkx(G, node_pos, node_size=500)
     # nx.draw_networkx_nodes(G,node_pos,node_size=500,node_color="lightsalmon")
-    nx.draw_networkx_nodes(G,node_pos,node_size=400,node_color="orangered")
-    nx.draw_networkx_labels(G,node_pos,font_family="Times New Roman",font_size=14)
+    nx.draw_networkx_nodes(G,node_pos,node_size=200,node_color="orangered")
+    nx.draw_networkx_labels(G,node_pos,font_family="Times New Roman",font_size=10)
 
     # line 0
     h = []
@@ -232,7 +232,7 @@ if __name__ == "__main__":
 
     for nl in range(0,10):
         G = nx.MultiGraph()
-        plt.figure(figsize=(8, 12))
+        plt.figure(figsize=(8, 9))
         for i in range(0, len(nodes)):
             G.add_node(nodes[i], pos=(x[i], y[i]))
         node_pos = nx.get_node_attributes(G, 'pos')
