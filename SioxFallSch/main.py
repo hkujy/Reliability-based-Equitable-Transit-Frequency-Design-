@@ -14,6 +14,7 @@ import numpy as np
 import matplotlib.colors as colors
 import matplotlib.cm as cmx
 import matplotlib as mpl
+import CreateSch
 
 def make_proxy(clr, mappable, **kwargs):
     return Line2D([0, 1], [0, 1], color=clr, **kwargs)
@@ -23,7 +24,7 @@ def read_standard_node():
     """
     f = open("SiouxFalls_node.tntp", "r",encoding='utf-8')
     line = f.readline()
-    line = f.readline()
+    # line = f.readline()
     nodes = []
     x = []
     y = []
@@ -84,6 +85,10 @@ if __name__ == "__main__":
             "maroon","sienna","seashell","saddlebrown"]
     # step 0: read the set of bus lines
     lines = read_lines()
+    CreateSch.create_dep_time(lines)
+
+    exit()
+
     for l in lines:
         print(l)
     # step 1: read standard sioux fall network nodes
