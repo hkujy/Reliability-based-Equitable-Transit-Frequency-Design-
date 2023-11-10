@@ -11,6 +11,7 @@ import pandas as pd
 start_time = 0
 end_time = 120
 num_lines = 20
+fixed_dwell_time = 1  # it seems i have to use fixed dewll time, otherwise, it might become difficult to create a time-space network
 
 
 def get_headway():
@@ -39,18 +40,42 @@ def create_dep_time(_buslines):
     # print(ttdf)
     travel_time = [[0]*25 for i in range(25)]
     for row in range(0, ttdf.shape[0]):
-        i = int(ttdf["From"][row])
-        j = int(ttdf["To"][row])
-        travel_time[i][j] = int(ttdf["Time"][row])
-    print(travel_time)
+        dep_stop = int(ttdf["From"][row])
+        arr_top = int(ttdf["To"][row])
+        travel_time[dep_stop][arr_top] = int(ttdf["Time"][row])
+    # print(travel_time)
     
     #TODO: next step: based on travel time create the trajectory time for each bus line
+    # print(_buslines)
+    # exit()
     duration = end_time - start_time    
-    for l in range(0,num_lines):
-        num_trips = duration/headway[l]
-        for t in range(0,num_trips):
-            dep_from_terminal = int(start_time + (t-1)*headway[l])
-            for
+
+    with open ("BusLineTrips.csv","w+") as f:
+        print("line_id,trip_id,arrival_time,departure_time,stop_id,stop_sequence",file=f)
+        for l in range(0,num_lines):
+            num_trips = int(duration/headway[l])
+            num_stops = len(_buslines[l])
+            for t in range(0,num_trips):
+                # the first two lines are the time at the terminal
+                arr = int(start_time + t*headway[l])
+                dep = arr + fixed_dwell_time
+                stop_id = _buslines[l][0]
+                print("{0},{1},{2},{3},{4},{5}".format(
+                   l,t,arr,dep,stop_id,0
+                ),file = f)
+                # the follwong loop from the second stop to the last
+                for s in range(0, num_stops-1):
+                    dep_stop = _buslines[l][s]
+                    arr_stop = _buslines[l][s+1]
+                    tt = travel_time[dep_stop][arr_stop]
+                    # print(tt)
+                    arr = dep + tt
+                    dep = arr + fixed_dwell_time     
+                    print("{0},{1},{2},{3},{4},{5}".format(
+                       l,t,arr,dep,arr_stop,s+1
+                    ),file = f)
+ 
+
 
 
 
