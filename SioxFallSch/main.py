@@ -85,7 +85,8 @@ if __name__ == "__main__":
             "maroon","sienna","seashell","saddlebrown"]
     # step 0: read the set of bus lines
     lines = read_lines()
-    CreateSch.create_dep_time(lines)
+    # CreateSch.create_dep_time(lines)
+    CreateSch.create_and_print_sch_file(lines)
 
     exit()
 
