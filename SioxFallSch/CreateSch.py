@@ -13,6 +13,10 @@ end_time = 120
 num_lines = 20
 fixed_dwell_time = 1  # it seems i have to use fixed dewll time, otherwise, it might become difficult to create a time-space network
 target_folder = "./JND - ISTTT Sioux Fall/"
+bus_cap = 100
+#TODO: 
+#1. need to set up the capacity 
+#2. need to set up the bus capacity
 
 
 def get_headway():
@@ -99,7 +103,7 @@ def print_lines(_buses,_headways,_start_time,_end_time):
     """
     file_name = "./JND - ISTTT Sioux Fall/lines.csv"
     with open(file_name,"w+") as f:
-        print("id,Name,SerType,HeadWay,StartTime,EndTime,VehType,Doors",file=f)
+        print("id,Name,SerType,HeadWay,StartTime,EndTime,VehType,Cap,Doors",file=f)
         for l in range(0, len(_buses)):
             print("{0},{1},{2},{3},{4},{5},{6},{7}".format(
                 l,
@@ -109,6 +113,7 @@ def print_lines(_buses,_headways,_start_time,_end_time):
                 _start_time[l],
                 _end_time[l],
                 "Buses",
+                bus_cap,
                 2
             ),file = f)
 
