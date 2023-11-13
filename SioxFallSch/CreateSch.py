@@ -6,7 +6,10 @@ __status__ = 'complete, paper under second round review'
     code for create schedule for the arbitary lines
 """
 import pandas as pd
-
+# Remarks: 
+# 1. the bus stop number should start from 0 in the files
+#    this is becuase the c# list index starts from 0
+# 2. it seems that there is no neighboring nodes for transfers
 # the following two set the start and end time for bus lines
 start_time = 0
 end_time = 120
@@ -58,6 +61,8 @@ def create_dep_time(_buslines):
     # exit()
     duration = end_time - start_time    
 
+    # Remarks: here I do not adjust the value of the nodes, 
+    # this is becuase this node file is not used in the C# code
     with open ("BusLineTrips.csv","w+") as f:
         print("line_id,trip_id,arrival_time,departure_time,stop_id,stop_sequence",file=f)
         for l in range(0,num_lines):
@@ -105,7 +110,7 @@ def print_lines(_buses,_headways,_start_time,_end_time):
     with open(file_name,"w+") as f:
         print("id,Name,SerType,HeadWay,StartTime,EndTime,VehType,Cap,Doors",file=f)
         for l in range(0, len(_buses)):
-            print("{0},{1},{2},{3},{4},{5},{6},{7}".format(
+            print("{0},{1},{2},{3},{4},{5},{6},{7},{8}".format(
                 l,
                 str(l),
                 "Schedule",
@@ -125,7 +130,8 @@ def print_linestop(_buses):
     with open(file_name,"w+") as f:
         for l in range(0,len(_buses)):
             print("{0},".format(l),file=f,end="")
-            print(','.join(str(x) for x in list(_buses[l])),file=f,)
+            # note the stop index should start from 0, therefore, I need to reduce 1 in the cplex
+            print(','.join(str(x-1) for x in list(_buses[l])),file=f,)
 
 def print_linetimes(_lt):
     """
@@ -137,10 +143,10 @@ def print_linetimes(_lt):
             print("{0},".format(l),file=f,end="")
             print(','.join(str(x) for x in list(_lt[l])),file=f)
 
-
 def print_node():
     """
         id,Name,Type
+        the node range from 0 to 23 for the SiouxFall Network
     """
     print("---remarks: print 24 nodes for the SiouxFall Network---")
     file_name = target_folder + "Node.csv" 
@@ -177,7 +183,20 @@ def print_trips():
         print("id,Origin,Dest,TargetDepTime,TargetArrTime,DepMaxEarly,DepMaxLate,ArrMaxEarly,ArrMaxLate,Demand,MinPie,MaxPie",file=f)
         print("0,0,23,0,60,0,5,20,30,50,1,30",file=f)
         print("1,0,5,5,35,5,10,25,35,50,1,30",file=f)
-         
+
+def create_TransferNodePair():
+    """
+        create transfer node pairs
+        for the sioux fall network
+        there is no neighbour nodes for transfers
+    """
+    # create a file to write
+    file_name = target_folder + "TransferNodesPair.csv" 
+    with open(file_name,"w+") as f:
+        pass
+        # for i in range(0,24):
+            # print("{0},{1}".format(i,i+1),file=f)
+
 
 def create_and_print_sch_file(_buses):
     """
@@ -192,6 +211,8 @@ def create_and_print_sch_file(_buses):
     print_trips()
     print_lines(_buses,headway,start_time,end_time)
     print_linestop(_buses)
+    create_TransferNodePair() # sixou nodes do not have transfer nodes pair
+
 
 
 
