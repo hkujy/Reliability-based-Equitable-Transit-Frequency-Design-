@@ -105,6 +105,8 @@ def print_lines(_buses,_headways,_start_time,_end_time):
     """
         file: lines.csv
         id,Name,SerType,HeadWay,StartTime,EndTime,VehType,Doors 
+        notes on the vehTypes (specified in the C# code)
+        -Bus, Train, S_Train, Metro
     """
     file_name = "./JND - ISTTT Sioux Fall/lines.csv"
     with open(file_name,"w+") as f:
@@ -117,7 +119,7 @@ def print_lines(_buses,_headways,_start_time,_end_time):
                 _headways[l],
                 _start_time[l],
                 _end_time[l],
-                "Buses",
+                "Bus",
                 bus_cap,
                 2
             ),file = f)
